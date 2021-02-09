@@ -15,6 +15,13 @@ describe('Test api routes', () => {
         isAdmin: false
     };
 
+    let book = {
+        isAvailable: true,
+        _id: "60217cfba15aeb0a64e3fcd8",
+        title: 'The Hunger Games #1',
+        author: 'Suzanne Collins',
+    };
+
     describe('Auth routes', () => {
         it('should not register', (done) => {
             chai.request(server).post('/api/v1/register').send().end((err, res) => {
@@ -50,11 +57,14 @@ describe('Test api routes', () => {
             });
         });
 
-        it('should get all books', (done) => {
-            chai.request(server).get('/api/v1/books')
+        it('should get book by id', (done) => {
+            chai.request(server).get('/api/v1/book/'+ book._id)
                 .send().end((err, res) => {
                 res.should.have.status(200);
-                res.body.should.be.a('array');
+                res.body.should.be.a('object');
+                res.body.title.should.be.a('string');
+                res.body.author.should.be.a('string');
+                res.body.isAvailable.should.be.a('boolean');
                 done();
             });
         });

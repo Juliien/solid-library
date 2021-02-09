@@ -74,3 +74,18 @@ exports.returnBook = async (req, res) => {
     return res.status(400).json({message: "Bad Request !"});
 };
 
+exports.getBookById = async (req, res) => {
+    if (req.params.id) {
+        try {
+            const book = await Book.findOne({_id: req.params.id});
+            if (book) {
+                return res.status(200).json(book);
+            }
+            return res.status(404).json({message: "Book Not Found !"});
+        } catch (e) {
+            return res.status(500).json({message: "Internal Server Error: " + e.message});
+        }
+    }
+    return res.status(400).json({message: "Bad Request !"});
+};
+
