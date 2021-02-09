@@ -8,6 +8,11 @@ const BookSchema = new mongoose.Schema({
     author: {
         type: String,
         required: true
+    },
+    isAvailable: {
+        type: Boolean,
+        required: true,
+        default: true
     }
 });
 

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema({
-    userName: {
+    username: {
         type: String,
         require: true
     },
@@ -12,7 +12,18 @@ const UserSchema = new mongoose.Schema({
     isAdmin: {
         type: Boolean,
         required: true
-    }
+    },
+    token: {
+        type: String,
+        required: false,
+        default: null
+    },
+    borrowed: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Book',
+        required: false,
+        default: []
+    }]
 });
 
 module.exports = mongoose.model('User', UserSchema);
