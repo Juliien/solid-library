@@ -7,8 +7,12 @@ chai.use(chaiHttp);
 
 describe('Test api routes', () => {
     let testUser = {
+        _id:'',
+        token: '',
         username: 'julien',
-        password: 'julien'
+        password: 'julien',
+        borrowed: [],
+        isAdmin: false
     };
 
     describe('Auth routes', () => {
@@ -21,9 +25,36 @@ describe('Test api routes', () => {
         });
 
         it('should login', (done) => {
-            chai.request(server).post('/api/v1/login').send(testUser).end((err, res) => {
+            chai.request(server).post('/api/v1/login')
+                .send({
+                    username: testUser.username,
+                    password: testUser.password
+                }).end((err, res) => {
                 res.should.have.status(200);
                 res.body.should.be.a('object');
+                testUser._id = res.body._id;
+                testUser.token = res.body.token;
+                testUser.borrowed = res.body.borrowed;
+                done();
+            });
+        });
+    });
+
+    describe('Book routes', () => {
+        it('should get all books', (done) => {
+            chai.request(server).get('/api/v1/books')
+                .send().end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.be.a('array');
+                done();
+            });
+        });
+
+        it('should get all books', (done) => {
+            chai.request(server).get('/api/v1/books')
+                .send().end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.be.a('array');
                 done();
             });
         });
